@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom'; 
 import ScoreBoard from './src/containers/ScoreBoard';
 
 ReactDOM.render(
