@@ -6,6 +6,7 @@ import * as PlayerActionsCreators from '../actions/player';
 import AddPlayerForm from '../components/AddPlayerForm';
 import Player from '../components/Player';
 import Header from '../components/Header';
+import PlayerDetails from '../components/PlayerDetails';
 
 class ScoreBoard extends React.Component {
 
@@ -15,10 +16,16 @@ class ScoreBoard extends React.Component {
 
   render() {
 
-    const {dispatch,players} = this.props;
+    const {dispatch, players, selectedPlayerIndex} = this.props;
     const addPlayer = bindActionCreators(PlayerActionsCreators.addPlayer, dispatch);
     const removePlayer = bindActionCreators(PlayerActionsCreators.removePlayer, dispatch);
     const updatePlayerScore = bindActionCreators(PlayerActionsCreators.updatePlayerScore, dispatch);
+    const selectPlayer = bindActionCreators(PlayerActionsCreators.selectPlayer, dispatch);
+
+    let selectedPlayer;
+    if(selectedPlayerIndex !== -1) {
+      selectedPlayer = players[selectedPlayerIndex];
+    }
 
     const playerComponents = players.map((player, index) => (
       <Player
@@ -28,6 +35,7 @@ class ScoreBoard extends React.Component {
         key={player.name}
         updatePlayerScore={updatePlayerScore}
         removePlayer={removePlayer}
+        selectPlayer={selectPlayer}
       />
     ));
 
@@ -38,6 +46,9 @@ class ScoreBoard extends React.Component {
           {playerComponents}
         </div>
         <AddPlayerForm addPlayer={addPlayer} />
+        <div className="player-detail">
+          <PlayerDetails selectedPlayer={selectedPlayer}/>
+        </div>
       </div>
     );
   }
@@ -45,7 +56,8 @@ class ScoreBoard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    players: state
+    players: state.players,
+    selectedPlayerIndex: state.selectedPlayerIndex
   }
 }
 
